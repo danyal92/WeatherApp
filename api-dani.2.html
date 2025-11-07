@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>API Example</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      height: 100%;
+      width: 100%;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background-image: url('https://wallpaperaccess.com/full/1462190.jpg');
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: center;
+    }
+
+    .divi1 {
+      position: fixed;
+      height: 100%;
+      width: 100%;
+      background-color: rgba(0, 0, 0, 0.142);
+      backdrop-filter: blur(4px);
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .apimain {
+      height: 50%;
+      width: 30%;
+      background-color: rgba(255, 255, 255, 0.1);
+      border: 2px solid black;
+      border-radius: 20px;
+      transition: all ease-in 0.4s;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .apimain:hover {
+      transform: translateY(-10px);
+      box-shadow: 0px 0px 40px orange;
+      border: 2px solid white;
+    }
+
+    input {
+      width: 70%;
+      padding: 10px;
+      font-size: 16px;
+      border-radius: 10px;
+      border: 2px solid #965757;
+      transition: ease-in 0.2s;
+
+    }
+
+    .input:hover {
+
+
+      transform: translateY(-10px);
+
+    }
+
+
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      border-radius: 10px;
+      background-color: orange;
+      color: white;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background-color: white;
+      transform: translateY(6px);
+      color: black;
+      border: 1px solid black;
+      box-shadow: 0px 0px 20px rgb(219, 167, 70);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="divi1">
+    <div class="apimain">
+      <input class="input" type="text" id="city" placeholder="Enter city name">
+      <button onclick="Weather()">Submit</button>
+
+    </div>
+    <div id="result">
+
+    </div>
+  </div>
+
+
+
+  <script>
+    async function Weather() {
+      const city = document.getElementById("city").value.trim();
+      const result = document.getElementById("result");
+      const apiKey = "189056e377563bf6ef02f25398a72740";
+
+
+
+      try {
+        const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`);
+        const data = await response.json();
+        // console.log('api data', data);
+
+        if (data.cod === 200) {
+          result.innerHTML = `
+                        <b>City:</b> ${data.name} <br>
+                        <b>Temperature:</b> ${data.main.temp} °C <br>
+                        <b>Weather:</b> ${data.weather[0].description}
+                    `;
+        } else {
+          result.innerHTML = `<span style="color:red;">${data.message}</span>`;
+        }
+      } catch (error) {
+        console.error(error);
+        result.innerHTML = "An error occurred while fetching data.";
+      }
+    }
+  </script>
+</body>
+
+</html>
